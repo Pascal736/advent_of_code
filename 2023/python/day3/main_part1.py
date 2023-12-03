@@ -1,15 +1,13 @@
 from dataclasses import dataclass
-from pprint import pprint
 
 
 def read_file(path: str) -> list[str]:
     with open(path, "r") as f:
-        return f.readlines()
+        return f.read().splitlines()
 
 
 def merge_to_single_line(data: list[str]) -> (str, int):
-    line_length = len(data[0].strip())
-    return ("".join(data).replace("\n", ""), line_length)
+    return ("".join(data), len(data[0]))
 
 
 @dataclass
@@ -28,10 +26,7 @@ class Number:
         )
         adjacent_indices = neighbours | lower_neighbours | upper_neighbours
 
-        if symbol_positions & adjacent_indices:
-            return True
-        else:
-            return False
+        return bool(symbol_positions & adjacent_indices)
 
 
 def get_positions_and_values(data: str, line_length: int) -> (list[Number], set[int]):
